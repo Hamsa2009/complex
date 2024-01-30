@@ -12,7 +12,7 @@ node {
 		  echo 'Initialise Dockerhub login'
 		  withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_ID')]){
 		  	sh '''                            
-                            echo "${DOCKER_PWD} | docker login -u ${DOCKER_ID} --password-stdin"
+                            echo "${DOCKER_PWD} | docker login -u ${DOCKER_ID} --password-stdin"			    
                          '''
 		  }
 		  	sh 'printenv'
@@ -77,9 +77,7 @@ node {
 
     stage('Cleanup'){
 		echo 'Removing unused docker containers and images..'
-			sh 'docker system prune -f'
-       		 // keep intermediate images as cache, only delete the final image
-            		sh 'docker images -q | xargs --no-run-if-empty docker rmi'	
+			sh 'docker system prune -f'       		 	
     }    
   }
   catch (err) {
