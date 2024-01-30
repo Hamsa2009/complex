@@ -12,6 +12,8 @@ node {
 		  echo 'Initialise Dockerhub login'
 		  withCredentials([usernamePassword(credentialsId: 'DockerHub', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_ID')]){
 		  	sh '''
+                            env.DOCKER_ID= ${DOCKER_ID}
+			    env.DOCKER_PWD= ${DOCKER_PWD} 
                             echo "${DOCKER_PWD} | docker login -u ${DOCKER_ID} --password-stdin"
                          '''
 		  }
@@ -22,15 +24,15 @@ node {
 		 
 		 if (env.BRANCH_NAME == 'feature') {		 
 		 echo 'Building Docker in Feature branch'
-			sh 'docker build -t hamsa20/complex-test -f Dockerfile.dev ./client'
+			sh 'docker build -t ${env.DOCKER_ID}/complex-test -f ./client/Dockerfile.dev ./client'
 		 }
 		 else{
 		 echo 'Building Docker in Master Branch'
-			sh 'docker build -t hamsa20/complex-test -f Dockerfile ./client'
+			sh 'docker build -t hamsa20/complex-test -f ./client/Dockerfile ./client'
 		 }
     }
 	
-	boolean clientTestPassed = true
+    boolean clientTestPassed = true
     stage('Test'){
 	    echo 'Docker test for client'
 		try{
