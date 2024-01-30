@@ -17,6 +17,7 @@ node {
 		  }
 		  	sh 'printenv'
     }
+    
     stage('Build'){
 		 echo 'Building Docker for Client'
 		 
