@@ -11,7 +11,9 @@ node {
 			sh 'docker -v'
 		  echo 'Initialise Dockerhub login'
 			withCredentials([usernamePassword(credentialsId: 'DockerHub', usernameVariable: 'DOCKER_ID', passwordVariable: 'DOCKER_PWD')
-			sh 'docker login -u $DOCKER_ID -p $DOCKER_PWD ...'
+			sh '''
+                            echo "${DOCKER_PWD} | docker login -u ${DOCKER_ID} --password-stdin"
+                         '''
 			sh 'printenv'
     }
     stage('Build'){
