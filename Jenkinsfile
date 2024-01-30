@@ -22,7 +22,7 @@ node {
 		 
 		 if (env.BRANCH_NAME == 'feature') {		 
 		 echo 'Building Docker in Feature branch'
-			sh 'docker build -t hamsa20/client-test -f ./client/Dockerfile.dev ./client'
+			sh 'docker build -t ${env.DOCKER_ID}/client-test -f ./client/Dockerfile.dev ./client'
 		 }
 		 else{
 		 echo 'Building Docker in Master Branch'
