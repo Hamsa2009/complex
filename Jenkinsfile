@@ -85,7 +85,7 @@ node {
        sh 'az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}'
       }
       withCredentials([usernamePassword(credentialsId: 'ACR', passwordVariable: 'password', usernameVariable: 'username')]) {
-       sh 'az webapp config container set --name MultiContainerReact --resource-group Azure-HK --multicontainer-config-file docker-compose-dev.yml — multicontainer-config-type compose'
+       sh 'az webapp config container set --name MultiContainerReact --resource-group Azure-HK --multicontainer-config-file docker-compose-dev.yml --multicontainer-config-type compose'
       }
     }   
   }
