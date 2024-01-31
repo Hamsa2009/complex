@@ -79,7 +79,15 @@ node {
     stage('Cleanup'){
 		echo 'Removing unused docker containers and images..'
 			sh 'docker system prune -f'       		 	
-    }    
+    }
+    stage('Deploy into Web App'){
+      withCredentials([azureServicePrincipal('02721850-4b8f-4fd8-a10d-ba3962133797')]) {
+       sh 'az login --service-principal -u ${AZURE_CLIENT_ID} -p ${AZURE_CLIENT_SECRET} --tenant ${AZURE_TENANT_ID}'
+      }
+      withCredentials([usernamePassword(credentialsId: 'ACR', passwordVariable: 'password', usernameVariable: 'username')]) {
+       sh 'az webapp config container set --name MultiContainerReact --resource group Azure-HK --multicontainer-config-file docker-compose-dev.yml — multicontainer-config-type compose'
+      }
+    }   
   }
   catch (err) {
     throw err
